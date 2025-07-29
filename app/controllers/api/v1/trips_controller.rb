@@ -2,7 +2,7 @@ class Api::V1::TripsController < ApplicationController
   before_action :set_trip, only: [:show, :update, :destroy]
 
   def index
-    @trips = Trip.all
+    @trips = TripList.all
     render json: @trips
   end
 
@@ -11,7 +11,7 @@ class Api::V1::TripsController < ApplicationController
   end
 
   def create
-    @trip = Trip.new(trip_params)
+    @trip = TripList.new(trip_params)
     if @trip.save
       render json: @trip, status: :created
     else
@@ -35,7 +35,7 @@ class Api::V1::TripsController < ApplicationController
   private
 
   def set_trip
-    @trip = Trip.find(params[:id])
+    @trip = TripList.find(params[:id])
   end
 
   def trip_params
