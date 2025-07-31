@@ -39,6 +39,6 @@ class Api::V1::TripsController < ApplicationController
   end
 
   def trip_params
-    params.require(:trip).permit(:name, :destination, :start_date, :end_date, :description)
+    params.require(:trip).permit(:upload_file, :title, :description, :location, :start_date, :end_date, :cost, :travel_type, :traveler_number, :email, :user_id)
   end
 end

@@ -37,7 +37,7 @@ let(:trip_list) {
 
   describe 'POST /api/v1/trips' do
     it 'creates a trip' do
-      post '/api/v1/trips', params: { trip_list: { title: 'New', description: 'Test', location: 'NY', start_date: Date.today, end_date: Date.today + 1, cost: 200.0, travel_type: 'Adventure', traveler_number: 3, email: 'new@example.com', user_id: user.id } }
+      post '/api/v1/trips', params: { trip: {upload_file: "sample.pdf", title: 'New', description: 'Test', location: 'NY', start_date: Date.today, end_date: Date.today + 1, cost: 200.0, travel_type: 'Adventure', traveler_number: 3, email: 'new@example.com', user_id: user.id } }
       expect(response).to have_http_status(:created)
       expect(JSON.parse(response.body)['title']).to eq('New')
     end
@@ -45,7 +45,7 @@ let(:trip_list) {
 
   describe 'PATCH /api/v1/trips/:id' do
     it 'updates a trip' do
-      patch "/api/v1/trips/#{trip_list.id}", params: { trip_list: { title: 'Updated' } }
+      patch "/api/v1/trips/#{trip_list.id}", params: { trip: { title: 'Updated' } }
       expect(response).to have_http_status(:ok)
       expect(JSON.parse(response.body)['title']).to eq('Updated')
     end
