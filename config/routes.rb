@@ -19,8 +19,8 @@ Rails.application.routes.draw do
       # UserInfos routes
       get    '/user_infos',        to: 'user_infos#index',   as: 'user_infos'
       get    '/user_infos/:id',    to: 'user_infos#show',    as: 'user_info'
+      post   '/user_infos',        to: 'user_infos#update'
       patch  '/user_infos/:id',    to: 'user_infos#update'
-      put    '/user_infos/:id',    to: 'user_infos#update'
       delete '/user_infos/:id',    to: 'user_infos#destroy'
 
       # Trips routes
@@ -40,6 +40,10 @@ Rails.application.routes.draw do
       get    '/notifications',  to: 'notifications#index', as: 'notifications'
       patch  '/notifications/:id', to: 'notifications#update'
       put    '/notifications/:id', to: 'notifications#update'
+
+      # Sessions routes
+      post   '/login',  to: 'sessions#create'
+      delete '/logout', to: 'sessions#destroy'
     end
   end
   # Defines the root path route ("/")

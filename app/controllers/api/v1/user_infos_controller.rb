@@ -30,6 +30,6 @@ class Api::V1::UserInfosController < ApplicationController
   end
 
   def user_info_params
-    params.require(:user_info).permit(:user_id, :phone, :country, :travel_level, :travel_preferences, :trip_taken)
+    params.require(:user_info).permit(:user_id, :Phone, :Country, :Travel_level, :Trip_taken)
   end
 end

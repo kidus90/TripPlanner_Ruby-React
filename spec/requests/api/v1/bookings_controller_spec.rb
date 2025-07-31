@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::BookingsController, type: :request do
-  let(:user) { User.create!(name: 'Test', email: 'test@example.com', password: 'password', password_confirmation: 'password') }
 let(:user) { User.create!(name: 'Test', email: 'test@example.com', password: 'password', password_confirmation: 'password') }
 let(:trip_list) {
   TripList.create!(

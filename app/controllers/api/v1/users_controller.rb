@@ -5,7 +5,8 @@ class Api::V1::UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      render json: @user, status: :created
+      user_info = UserInfo.create(user_id: @user.id, Phone: "", Country: "", Travel_level: "", Trip_taken: 0,  ) if @user.user_info.nil?
+      render json: {user: @user, user_info: user_info, message: "user and user_info created successfully"}, status: :created
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
@@ -19,7 +20,7 @@ class Api::V1::UsersController < ApplicationController
     if @user.update(user_params)
       render json: @user
     else
-      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: @user.errors.full_messages, request_params: user_params, user: @user }, status: :unprocessable_entity
     end
   end
 
