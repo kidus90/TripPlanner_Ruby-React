@@ -9,7 +9,7 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
+    setPasswordVisible((prev) => !prev);
   };
 
   const handleSubmit = (e) => {
@@ -18,61 +18,74 @@ const SignIn = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#f0f2f5] font-sans">
-      <div className="flex flex-col md:flex-row bg-white rounded-[10px] shadow-[0_0_20px_rgba(0,0,0,0.1)] w-[95%] md:w-[80%] max-w-[1200px] overflow-hidden m-5">
-        <div className="p-10 w-full md:w-1/2 box-border">
-          <div className="text-xl font-bold mb-7 flex items-center gap-2 text-black-600">
+    <div className="flex items-center justify-center min-h-screen bg-[#f0f2f5] font-sans px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col md:flex-row bg-white rounded-2xl shadow-lg w-full max-w-[1200px] overflow-hidden">
+        {/* Form Section */}
+        <div className="w-full md:w-1/2 p-8 sm:p-10">
+          <div className="text-xl sm:text-2xl font-bold mb-6 flex items-center gap-2 text-gray-800">
             <FontAwesomeIcon icon={faTree} />
             Trip Planner
           </div>
-          <h1 className="text-2xl mb-2 font-semibold">Sign in</h1>
-          <p className="text-[#666] mb-7">Please login to continue to your account.</p>
+          <h1 className="text-lg sm:text-xl mb-1 font-semibold text-gray-800">Sign in</h1>
+          <p className="text-sm text-gray-500 mb-6">Please log in to continue to your account.</p>
+
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="email" className="block text-sm text-[#333] mb-1">Email</label>
+              <label htmlFor="email" className="block text-sm text-gray-700 mb-1">Email</label>
               <input
                 type="email"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-3 border border-[#ddd] rounded text-base"
+                className="w-full p-3 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring focus:ring-blue-200"
               />
             </div>
+
             <div>
-              <label htmlFor="password" className="block text-sm text-[#333] mb-1">Password</label>
-              <div className="relative flex items-center">
+              <label htmlFor="password" className="block text-sm text-gray-700 mb-1">Password</label>
+              <div className="relative">
                 <input
                   type={passwordVisible ? 'text' : 'password'}
                   id="password"
-                  className="w-full p-3 border border-[#ddd] rounded text-base pr-10"
+                  className="w-full p-3 border border-gray-300 rounded-lg text-base pr-12 focus:outline-none focus:ring focus:ring-blue-200"
                 />
-                <span
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer text-[#999] text-sm"
+                <button
+                  type="button"
                   onClick={togglePasswordVisibility}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 hover:text-gray-700"
                 >
                   {passwordVisible ? 'Hide' : 'Show'}
-                </span>
+                </button>
               </div>
             </div>
-            <div className="flex items-center text-[#666]">
-              <input type="checkbox" className="mr-2" />
-              <label className="text-sm cursor-pointer">Keep me logged in</label>
+
+            <div className="flex items-center text-gray-600 text-sm">
+              <input type="checkbox" id="remember" className="mr-2" />
+              <label htmlFor="remember" className="cursor-pointer">Keep me logged in</label>
             </div>
+
             <button
               type="submit"
-              href="/Create"
-              onClick={() => navigate('/Create')} 
-              className="bg-blue-500 text-white py-3 px-5 rounded text-lg w-full transition duration-200 hover:bg-blue-600"
+              className="bg-blue-500 text-white py-3 px-5 rounded-lg text-lg w-full transition duration-200 hover:bg-blue-600"
             >
               Sign in
             </button>
           </form>
-          <div className="mt-7 text-center text-[#666] text-sm">
+
+          <div className="mt-6 text-center text-sm text-gray-600">
             Need an account?{' '}
-            <a href="/Signup" onClick={() => navigate('/signup')} className="text-blue-500 hover:underline">Create one</a>
+            <button
+              type="button"
+              onClick={() => navigate('/signup')}
+              className="text-blue-500 hover:underline"
+            >
+              Create one
+            </button>
           </div>
         </div>
-        <div className="w-full md:w-1/2 bg-[url('images/signin.jpg')] bg-cover bg-center h-[300px] md:h-auto"></div>
+
+        {/* Image Section */}
+        <div className="w-full md:w-1/2 h-64 md:h-auto bg-[url('images/signin.jpg')] bg-cover bg-center"></div>
       </div>
     </div>
   );

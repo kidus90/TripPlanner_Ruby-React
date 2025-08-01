@@ -84,8 +84,7 @@ const App = () => (
         }
       />
       
-      
-      {/* Add other routes here */}
+
     </Routes>
   </Router>
 );
