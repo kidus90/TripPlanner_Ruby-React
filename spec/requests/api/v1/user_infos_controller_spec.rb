@@ -5,7 +5,7 @@ let(:user) { User.create!(name: 'Test', email: 'test8@example.com', password: 'p
 let(:user_info) {
   UserInfo.create!(
     user_id: user.id,
-    Phone: '123456',
+    Phone: '123456789',
     Country: 'Test Country',
     Travel_level: 'Beginner',
     Trip_taken: 2
@@ -29,14 +29,11 @@ let(:user_info) {
     end
   end
 
-
-end
-
   describe 'PATCH /api/v1/user_infos/:id' do
     it 'updates a user info' do
-      patch "/api/v1/user_infos/#{user_info.id}", params: { user_info: { Phone: '0123456789' } }
+      patch "/api/v1/user_infos/#{user_info.id}", params: { user_info: { Phone: '987654321' } }
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body)['Phone']).to eq('0123456789')
+      expect(JSON.parse(response.body)['Phone']).to eq('987654321')
     end
   end
 
@@ -47,4 +44,5 @@ end
       expect(JSON.parse(response.body)['message']).to eq('User info deleted successfully')
     end
   end
+
 end

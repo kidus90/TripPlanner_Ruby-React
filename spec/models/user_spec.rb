@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe User do
+RSpec.describe User, type: :model do
   describe 'validations' do 
     context 'Name' do
       it 'requires presence of name' do

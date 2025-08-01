@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :booking do
-    user { nil }
-    trip { nil }
+    user { association :user }
+    trip_list { association :trip_list }
   end
 end

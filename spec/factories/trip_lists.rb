@@ -1,15 +1,15 @@
 FactoryBot.define do
   factory :trip_list do
     upload_file { "MyString" }
-    title { "MyString" }
-    description { "MyText" }
-    location { "MyString" }
-    start_date { "2025-07-29" }
-    end_date { "2025-07-29" }
+    title { Faker::Lorem.sentence(word_count: 3) }
+    description { Faker::Lorem.paragraph }
+    location { Faker::Address.city }
+    start_date { Date.today }
+    end_date { Date.today + 2.days }
     cost { "9.99" }
     travel_type { "MyString" }
-    traveler_number { 1 }
-    email { "MyString" }
-    user { nil }
+    traveler_number { Faker::Number.between(from: 1, to: 10) }
+    email { Faker::Internet.email }
+    user { association :user }
   end
 end

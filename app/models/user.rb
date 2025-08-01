@@ -3,7 +3,8 @@ class User < ApplicationRecord
     
     validates :name, presence: true
     validates :email, presence: true, uniqueness: { case_sensitive: false }
-    validates :password, presence: true, length: { minimum: 8 }
+    validates :password, length: { minimum: 8 }, if: -> { password.present? }
+
     
     has_many :trip_lists
     has_many :bookings, through: :trip_lists
