@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LoggedNav from './LoggedNav';
 import Footer from './Footer';
 import TripNav from './TripNav';
+
 const CreateTrip = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -14,8 +15,8 @@ const CreateTrip = () => {
     description: '',
     email: '',
     transportationType: 'Train',
-    numberOfTravelers: "",
-    travelCost: "",
+    numberOfTravelers: '',
+    travelCost: '',
   });
 
   const handleChange = (e) => {
@@ -29,29 +30,27 @@ const CreateTrip = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
+    navigate('/personal-trip');
   };
 
   return (
     <>
       <LoggedNav />
       <div
-  className=" min-h-screen px-6 py-12 bg-cover bg-center"
-  style={{ backgroundImage: `url('images/create_home.png')` }}
->
+        className="min-h-screen bg-cover bg-center"
+        style={{ backgroundImage: `url('images/create_home.png')` }}
+      >
+        <TripNav />
 
-        {/* Tab Navigation */}
-          <TripNav />
-
-        {/* Form Section with Updated Wrapper Layout */}
-        <div className="flex items-center justify-center min-h-screen px-6 py-12">
-          <div className="w-full max-w-4xl bg-white shadow-xl rounded-3xl px-10 pt-6 pb-8">
-            <form onSubmit={handleSubmit} className="space-y-6 text-base">
+        <div className="flex justify-center px-4 py-8 sm:px-6 md:px-8 lg:py-12">
+          <div className="w-full max-w-3xl bg-white bg-opacity-90 shadow-xl rounded-2xl p-6 sm:p-10">
+            <form onSubmit={handleSubmit} className="space-y-6 text-sm sm:text-base">
               {/* Upload Cover Photo */}
               <div>
-                <label className="block font-medium text-gray-700 mb-2">Upload Cover Photo</label>
+                <label className="block font-medium text-gray-700 mb-2">Cover Photo</label>
                 <label
                   htmlFor="coverPhoto"
-                  className="flex items-center w-70 cursor-pointer bg-white border border-gray-300 rounded-md px-4 py-2 text-green-600 hover:text-green-500"
+                  className="flex items-center cursor-pointer bg-white border border-gray-300 rounded-md px-4 py-2 text-green-600 hover:text-green-500"
                 >
                   <span>Upload files...</span>
                   <input id="coverPhoto" name="coverPhoto" type="file" className="sr-only" onChange={handleChange} />
@@ -67,7 +66,7 @@ const CreateTrip = () => {
                   name="tripName"
                   value={formData.tripName}
                   onChange={handleChange}
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                  className="block w-full rounded-md border border-gray-300 p-2 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
 
@@ -78,7 +77,7 @@ const CreateTrip = () => {
                   name="destinations"
                   value={formData.destinations}
                   onChange={handleChange}
-                  className="block w-50 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                  className="block w-full rounded-md border border-gray-300 p-2 focus:border-green-500 focus:ring-green-500"
                 >
                   <option>Mexico</option>
                   <option>Paris</option>
@@ -87,7 +86,7 @@ const CreateTrip = () => {
               </div>
 
               {/* Dates */}
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-medium text-gray-700 mb-2">Start Date</label>
                   <input
@@ -95,7 +94,7 @@ const CreateTrip = () => {
                     name="startDate"
                     value={formData.startDate}
                     onChange={handleChange}
-                    className="block w-80 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                    className="block w-full rounded-md border border-gray-300 p-2 focus:border-green-500 focus:ring-green-500"
                   />
                 </div>
                 <div>
@@ -105,7 +104,7 @@ const CreateTrip = () => {
                     name="endDate"
                     value={formData.endDate}
                     onChange={handleChange}
-                    className="block w-80 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                    className="block w-full rounded-md border border-gray-300 p-2 focus:border-green-500 focus:ring-green-500"
                   />
                 </div>
               </div>
@@ -117,8 +116,8 @@ const CreateTrip = () => {
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  rows="3"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                  rows="4"
+                  className="block w-full rounded-md border border-gray-300 p-2 focus:border-green-500 focus:ring-green-500"
                 ></textarea>
               </div>
 
@@ -130,18 +129,18 @@ const CreateTrip = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="block w-80 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                  className="block w-full rounded-md border border-gray-300 p-2 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
 
-              {/* Transportation */}
+              {/* Transportation Type */}
               <div>
-                <label className="block font-medium text-gray-700 mb-2">Transportation Type</label>
+                <label className="block font-medium text-gray-700 mb-2">Transportation</label>
                 <select
                   name="transportationType"
                   value={formData.transportationType}
                   onChange={handleChange}
-                  className="block w-50 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                  className="block w-full rounded-md border border-gray-300 p-2 focus:border-green-500 focus:ring-green-500"
                 >
                   <option>Train</option>
                   <option>Flight</option>
@@ -151,34 +150,41 @@ const CreateTrip = () => {
 
               {/* Number of Travelers */}
               <div>
-                <label className="block font-medium text-gray-700 mb-2">Number of Travelers</label>
+                <label className="block font-medium text-gray-700 mb-2">Travelers</label>
                 <input
                   type="number"
                   name="numberOfTravelers"
                   value={formData.numberOfTravelers}
                   onChange={handleChange}
-                  className="block w-50 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                  className="block w-full rounded-md border border-gray-300 p-2 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
 
               {/* Travel Cost */}
               <div>
-                <label className="block font-medium text-gray-700 mb-2">Travel Cost</label>
+                <label className="block font-medium text-gray-700 mb-2">Cost</label>
                 <input
                   type="number"
                   name="travelCost"
                   value={formData.travelCost}
                   onChange={handleChange}
-                  className="block w-50 rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
+                  className="block w-full rounded-md border border-gray-300 p-2 focus:border-green-500 focus:ring-green-500"
                 />
               </div>
 
               {/* Buttons */}
-              <div className="flex justify-start gap-6 mt-6">
-                <button type="submit" onClick={() => navigate('/personal-trip')} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-md">
+              <div className="flex flex-col sm:flex-row gap-4 mt-6">
+                <button
+                  type="submit"
+                  className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-md w-full sm:w-auto"
+                >
                   Save
                 </button>
-                <button type="button" className="bg-white hover:bg-gray-100 text-gray-700 font-bold py-2 px-6 rounded-md border border-gray-300">
+                <button
+                  type="button"
+                  className="bg-white hover:bg-gray-100 text-gray-700 font-bold py-2 px-6 rounded-md border border-gray-300 w-full sm:w-auto"
+                  onClick={() => navigate(-1)}
+                >
                   Cancel
                 </button>
               </div>

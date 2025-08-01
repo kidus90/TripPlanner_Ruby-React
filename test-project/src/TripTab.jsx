@@ -5,11 +5,12 @@ function TripTabs() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Determine active tab from path
-  let activeTab = 'personal';
-  if (location.pathname === '/Personal-trip') activeTab = 'personal';
-  if (location.pathname === '/Active-trip') activeTab = 'upcoming';
-  if (location.pathname === '/Close-trip') activeTab = 'closed';
+  // Dynamically extract tab name from pathname
+  const path = location.pathname.toLowerCase(); // standardize casing
+  const activeTab =
+    path.includes('active') ? 'upcoming' :
+    path.includes('close')  ? 'closed'   :
+    'personal'; // fallback
 
   const renderContent = () => {
     switch (activeTab) {
