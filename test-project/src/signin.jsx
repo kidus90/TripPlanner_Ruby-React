@@ -24,7 +24,7 @@ const SignIn = () => {
     try {
       await login(email, password);
       setSuccess('Login successful! Redirecting...');
-      setTimeout(() => navigate('/personal-trip'), 1500);
+      setTimeout(() => navigate('/create'), 1500);
     } catch (err) {
       setError(err.message || JSON.stringify(err));
     }
