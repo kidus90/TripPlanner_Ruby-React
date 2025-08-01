@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
-  before_action :authenticate_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:update, :destroy]
+  before_action :authenticate_user, only: [:update, :destroy]
 
   def create
     @user = User.new(user_params)
@@ -13,7 +13,17 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    render json: @user
+    if session['User_Id']
+      @user = User.find_by(id: session['User_Id'])
+      puts @user
+      if @user
+        render json: @user
+      else
+        render json: { error: 'User not found' }, status: :not_found
+      end
+    else
+      render json: { error: 'Session not found' }, status: :unauthorized
+    end
   end
 
   def update

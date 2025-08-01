@@ -1,21 +1,25 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import InviteButton2 from './InviteButton2';
 
-const PersonalTripDetail = ({ isOpen, tripData }) => {
+const PersonalTripDetail = () => {
+  const location = useLocation();
   const navigate = useNavigate();
-  if (!isOpen) return null;
+  const tripData = location.state?.trip;
+  if (!tripData) return null;
 
   const {
+    title,
     city,
-    destination,
-    startDate,
-    endDate,
+    location: destination,
+    start_date,
+    end_date,
     description,
     email,
-    transportation,
-    numberOfTravelers,
-    tripCost,
+    travel_type,
+    traveler_number,
+    cost,
+    photo_url
   } = tripData;
 
   return (
@@ -41,25 +45,25 @@ const PersonalTripDetail = ({ isOpen, tripData }) => {
           </button>
           <div className="flex justify-center mb-2">
             <img
-              src="images/Alps.png"
+              src={photo_url || "images/Alps.png"}
               alt="Trip Avatar"
               className="w-20 h-20 rounded-full border-4 border-white"
             />
           </div>
-          <h2 className="text-center text-xl font-semibold text-blue-500">{city}</h2>
+          <h2 className="text-center text-xl font-semibold text-blue-500">{title || city}</h2>
         </div>
 
         {/* Trip Details */}
         <div className="p-4 space-y-3 text-sm sm:text-base">
           {[
             { label: 'Destination', value: destination },
-            { label: 'Start Date', value: startDate },
-            { label: 'End Date', value: endDate },
+            { label: 'Start Date', value: start_date },
+            { label: 'End Date', value: end_date },
             { label: 'Description', value: description },
             { label: 'Email', value: email },
-            { label: 'Transportation', value: transportation },
-            { label: 'Number of Travelers', value: numberOfTravelers },
-            { label: 'Trip Cost', value: `$${tripCost}` },
+            { label: 'Transportation', value: travel_type },
+            { label: 'Number of Travelers', value: traveler_number },
+            { label: 'Trip Cost', value: cost ? `$${cost}` : undefined },
           ].map((item, index) => (
             <div key={index} className="bg-gray-50 rounded-md py-2 px-3">
               <strong>{item.label}:</strong> {item.value}

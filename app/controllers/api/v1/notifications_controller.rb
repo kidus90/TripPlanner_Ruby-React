@@ -2,7 +2,11 @@ class Api::V1::NotificationsController < ApplicationController
   before_action :set_notification, only: [:update]
 
   def index
-    @notifications = Notification.all
+    if session[:user_id]
+      @notifications = Notification.where(user_id: session[:user_id])
+    else
+      @notifications = []
+    end
     render json: @notifications
   end
 

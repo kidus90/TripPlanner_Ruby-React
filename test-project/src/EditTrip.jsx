@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { updateTrip, getTripById } from '../api';
 
 const EditTripForm = ({ onClose }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     coverPhoto: null,
     tripName: '',
@@ -16,6 +18,54 @@ const EditTripForm = ({ onClose }) => {
     travelCost: '',
     status: '',
   });
+  const [tripId, setTripId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    async function fetchTrip() {
+      let id = null;
+      let trip = null;
+      if (location.state && location.state.tripId) {
+        id = location.state.tripId;
+        setTripId(id);
+        try {
+          // If tripData is passed, use it, else fetch from API
+          if (location.state.tripData) {
+            trip = location.state.tripData;
+          } else {
+            trip = await getTripById(id);
+          }
+        } catch (err) {
+          setError('Failed to fetch trip data.');
+          setLoading(false);
+          return;
+        }
+      } else {
+        setError('No trip selected for editing.');
+        setLoading(false);
+        return;
+      }
+      if (trip) {
+        setFormData({
+          coverPhoto: null, // don't prefill file input
+          tripName: trip.title || '',
+          destinations: trip.location || '',
+          startDate: trip.start_date || '',
+          endDate: trip.end_date || '',
+          description: trip.description || '',
+          email: trip.email || '',
+          transportationType: trip.travel_type || '',
+          numberOfTravelers: trip.traveler_number || '',
+          travelCost: trip.cost || '',
+          status: trip.status || '',
+        });
+      }
+      setLoading(false);
+    }
+    fetchTrip();
+    // eslint-disable-next-line
+  }, [location.state]);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -25,12 +75,32 @@ const EditTripForm = ({ onClose }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    onClose();
-    navigate('/personal-trip');
+    try {
+      const tripData = {
+        title: formData.tripName,
+        description: formData.description,
+        location: formData.destinations,
+        start_date: formData.startDate,
+        end_date: formData.endDate,
+        cost: formData.travelCost,
+        travel_type: formData.transportationType,
+        traveler_number: formData.numberOfTravelers,
+        email: formData.email,
+        upload_file: formData.coverPhoto,
+        status: formData.status,
+      };
+      await updateTrip(tripId, tripData);
+      onClose && onClose();
+      navigate('/personal-trip');
+    } catch (err) {
+      alert('Failed to update trip.');
+    }
   };
+
+  if (loading) return <div className="text-center py-10">Loading...</div>;
+  if (error) return <div className="text-center py-10 text-red-600">{error}</div>;
 
   return (
     <div

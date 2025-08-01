@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LoggedNav from './LoggedNav';
 import Footer from './Footer';
 import TripNav from './TripNav';
+import { createTrip, getCurrentUser } from '../api';
 
 const CreateTrip = () => {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ const CreateTrip = () => {
     numberOfTravelers: '',
     travelCost: '',
   });
+  const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -27,10 +30,32 @@ const CreateTrip = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    navigate('/personal-trip');
+    setSuccess('');
+    setError('');
+    try {
+      // Fetch current user to get user_id
+      const user = await getCurrentUser();
+      const tripData = {
+        title: formData.tripName,
+        description: formData.description,
+        location: formData.destinations,
+        start_date: formData.startDate,
+        end_date: formData.endDate,
+        cost: formData.travelCost,
+        travel_type: formData.transportationType,
+        traveler_number: formData.numberOfTravelers,
+        email: formData.email,
+        upload_file: formData.coverPhoto,
+        user_id: user.id, // Set user_id from session
+      };
+      await createTrip(tripData);
+      setSuccess('Trip created successfully!');
+      setTimeout(() => navigate('/personal-trip'), 1200);
+    } catch (err) {
+      setError('Failed to create trip.');
+    }
   };
 
   return (
@@ -44,6 +69,8 @@ const CreateTrip = () => {
 
         <div className="flex justify-center px-4 py-8 sm:px-6 md:px-8 lg:py-12">
           <div className="w-full max-w-3xl bg-white bg-opacity-90 shadow-xl rounded-2xl p-6 sm:p-10">
+            {success && <div className="text-green-600 font-semibold mb-2">{success}</div>}
+            {error && <div className="text-red-600 font-semibold mb-2">{error}</div>}
             <form onSubmit={handleSubmit} className="space-y-6 text-sm sm:text-base">
               {/* Upload Cover Photo */}
               <div>

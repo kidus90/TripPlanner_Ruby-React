@@ -4,7 +4,7 @@ class TripList < ApplicationRecord
   has_one_attached :photo
 
 
-  validates :upload_file, :title, :description, :location, :start_date, :end_date, :travel_type, presence: true
+  validates :title, :description, :location, :start_date, :end_date, :travel_type, presence: true
   validates :cost, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :traveler_number, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }

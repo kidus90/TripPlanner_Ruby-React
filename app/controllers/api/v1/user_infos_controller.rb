@@ -2,8 +2,15 @@ class Api::V1::UserInfosController < ApplicationController
   before_action :set_user_info, only: [:show, :update, :destroy]
 
   def index
-    @user_infos = UserInfo.all
-    render json: @user_infos
+    if session['User_Id']
+      @user_info = UserInfo.find_by(user_id: session['User_Id'])
+      unless @user_info
+        @user_info = UserInfo.create(user_id: session['User_Id'], Phone: '', Country: '', Travel_level: 'beginner', Trip_taken: 0)
+      end
+      render json: @user_info
+    else
+      render json: { error: 'Session not found' }, status: :unauthorized
+    end
   end
 
   def show
@@ -26,7 +33,14 @@ class Api::V1::UserInfosController < ApplicationController
   private
 
   def set_user_info
-    @user_info = UserInfo.find(params[:id])
+    if session['User_Id']
+      @user_info = UserInfo.find_by(user_id: session['User_Id'])
+      unless @user_info
+        @user_info = UserInfo.create(user_id: session['User_Id'], Phone: '', Country: '', Travel_level: 'beginner', Trip_taken: 0)
+      end
+    else
+      render json: { error: 'Session not found' }, status: :unauthorized
+    end
   end
 
   def user_info_params

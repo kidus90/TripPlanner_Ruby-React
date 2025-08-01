@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getTrips, getCurrentUser, deleteTrip } from '../api';
 import LoggedNav from './LoggedNav';
 import Footer from './Footer';
 import TripNav from './TripNav';
@@ -8,12 +9,36 @@ import TripItem from './TripItem'; // assuming this is refactored separately
 
 const PersonalTrips = () => {
   const navigate = useNavigate();
-  const [trips, setTrips] = useState([
-    { city: 'Babogaya', startDate: '2025-07-17', endDate: '2026-06-08' },
-  ]);
+  const [trips, setTrips] = useState([]);
+  const [userId, setUserId] = useState(null);
 
-  const handleDelete = (indexToRemove) => {
-    setTrips(prevTrips => prevTrips.filter((_, idx) => idx !== indexToRemove));
+  useEffect(() => {
+    async function fetchTrips() {
+      try {
+        const user = await getCurrentUser();
+        setUserId(user.id);
+        const allTrips = await getTrips();
+        // Filter trips by current user
+        const myTrips = allTrips.filter(trip => trip.user_id === user.id);
+        setTrips(myTrips);
+      } catch (err) {
+        // Optionally handle error
+      }
+    }
+    fetchTrips();
+  }, []);
+
+  const handleDelete = async (tripId) => {
+    try {
+      await deleteTrip(tripId);
+      setTrips(prevTrips => prevTrips.filter(trip => trip.id !== tripId));
+    } catch (err) {
+      alert('Failed to delete trip.');
+    }
+  };
+
+  const handleView = (trip) => {
+    navigate('/Personal-Trip-detail', { state: { trip } });
   };
 
   return (
@@ -30,14 +55,16 @@ const PersonalTrips = () => {
             <TripTab />
             <div className="mt-6">
               {trips.length > 0 ? (
-                trips.map((trip, index) => (
+                trips.map((trip) => (
                   <TripItem
-                    key={index}
-                    city={trip.city}
-                    startDate={trip.startDate}
-                    endDate={trip.endDate}
+                    key={trip.id}
+                    city={trip}
+                    startDate={trip.start_date}
+                    endDate={trip.end_date}
+                    photoUrl={trip.photo_url}
                     navigate={navigate}
-                    onDelete={() => handleDelete(index)}
+                    onDelete={() => handleDelete(trip.id)}
+                    onView={() => handleView(trip)}
                   />
                 ))
               ) : (

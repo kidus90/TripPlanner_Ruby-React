@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
       # User registration and management
       post   '/users',         to: 'users#create', as: 'register_user'
-      get    '/users/:id',     to: 'users#show',    as: 'user'
+      get    '/users',         to: 'users#show',    as: 'user'
       patch  '/users/:id',     to: 'users#update'
       put    '/users/:id',     to: 'users#update'
       delete '/users/:id',     to: 'users#destroy'
