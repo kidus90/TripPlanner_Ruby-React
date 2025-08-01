@@ -3,19 +3,33 @@ import { faTree } from '@fortawesome/free-solid-svg-icons';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { register } from '../api';
+
 function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/create');
+    setError(null);
+    setSuccess(null);
+    try {
+      await register(name, email, password, passwordConfirmation);
+      setSuccess('Registration successful! Redirecting...');
+      setTimeout(() => navigate('/signin'), 1500);
+    } catch (err) {
+      setError(err.message || JSON.stringify(err));
+    }
   };
 
   return (
@@ -29,6 +43,9 @@ function Signup() {
           </div>
           <h1 className="text-2xl mb-2 font-semibold">Sign up</h1>
           <p className="text-[#666] mb-6">Create an account to enjoy the features of Revolutie.</p>
+
+          {error && <div className="text-red-500 mb-2">{error}</div>}
+          {success && <div className="text-green-600 mb-2">{success}</div>}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
@@ -57,6 +74,8 @@ function Signup() {
                 <input
                   type={passwordVisible ? 'text' : 'password'}
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full p-3 border border-[#ddd] rounded-lg text-base pr-12"
                 />
                 <button
@@ -68,7 +87,16 @@ function Signup() {
                 </button>
               </div>
             </div>
-
+            <div>
+              <label htmlFor="passwordConfirmation" className="block text-sm text-[#333] mb-1">Confirm Password</label>
+              <input
+                type={passwordVisible ? 'text' : 'password'}
+                id="passwordConfirmation"
+                value={passwordConfirmation}
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
+                className="w-full p-3 border border-[#ddd] rounded-lg text-base"
+              />
+            </div>
             <button
               type="submit"
               className="bg-blue-500 text-white py-3 px-5 rounded text-lg w-full transition duration-200 hover:bg-blue-600"
